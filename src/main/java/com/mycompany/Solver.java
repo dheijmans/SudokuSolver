@@ -53,7 +53,7 @@ public class Solver {
         return true;
     }
 
-    private void printGrid() {
+    public void printGrid() {
         for (int y = 0; y < 9; y++) {
             if (y % 3 == 0 && y != 0) {
                 System.out.println("— — —   — — —   — — —");
