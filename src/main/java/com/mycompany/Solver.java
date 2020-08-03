@@ -4,10 +4,53 @@ public class Solver {
 
     public static final int EMPTY = 0;
 
-    int[][] grid;
+    public int[][] grid;
 
     public Solver() {
         this.grid = new int[9][9];
+    }
+
+    public boolean solve() {
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                if (this.grid[y][x] == EMPTY) {
+                    for (int n = 1; n < 10; n++) {
+                        if (isValid(x, y, n)) {
+                            this.grid[y][x] = n;
+                            if (solve()) {
+                                return true;
+                            }
+                            this.grid[y][x] = EMPTY;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isValid(int x, int y, int n) {
+        for (int i = 0; i < 9; i++) {
+            if (n == grid[y][i] && i != x) {
+                return false;
+            }
+        }
+        for (int j = 0; j < 9; j++) {
+            if (n == grid[j][x] && j != y) {
+                return false;
+            }
+        }
+        int blockX = Math.floorDiv(x, 3) * 3;
+        int blockY = Math.floorDiv(y, 3) * 3;
+        for (int i = blockX; i < blockX + 3; i++) {
+            for (int j = blockY; j < blockY + 3; j++) {
+                if (n == grid[j][i] && i != x && j != y) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void printGrid() {
@@ -49,6 +92,9 @@ public class Solver {
             {0, 9, 0, 4, 0, 0, 0, 7, 0},
             {0, 0, 6, 0, 0, 0, 0, 0, 0}
         };
+        solver.printGrid();
+        solver.solve();
+        System.out.println();
         solver.printGrid();
     }
 
