@@ -1,6 +1,7 @@
 package com.mycompany;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -46,26 +47,27 @@ public class MainView extends VBox {
     }
 
     public void draw() {
-        GraphicsContext g = this.canvas.getGraphicsContext2D();
-        g.setTransform(this.affine);
+        GraphicsContext gc = this.canvas.getGraphicsContext2D();
+        gc.setTransform(this.affine);
 
-        g.setStroke(Color.BLACK);
+        gc.setStroke(Color.BLACK);
         for (int i = 0; i < 10; i++) {
             if (i % 3 == 0) {
-                g.setLineWidth(0.07d);
+                gc.setLineWidth(0.075d);
             } else {
-                g.setLineWidth(0.05d);
+                gc.setLineWidth(0.05d);
             }
-            g.strokeLine(i, 0d, i, 9d);
-            g.strokeLine(0d, i, 9d, i);
+            gc.strokeLine(i, 0d, i, 9d);
+            gc.strokeLine(0d, i, 9d, i);
         }
 
-        g.setFont(Font.font(0.8d));
-        g.setTextAlign(TextAlignment.CENTER);
+        gc.setFont(Font.font(0.75d));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 if (this.solver.grid[y][x] != Solver.EMPTY) {
-                    g.fillText(String.valueOf(this.solver.grid[y][x]), x + 0.5d, y + 0.8d);
+                    gc.fillText(String.valueOf(this.solver.grid[y][x]), x + 0.5d, y + 0.5d);
                 }
             }
         }
