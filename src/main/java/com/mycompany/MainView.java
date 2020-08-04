@@ -6,6 +6,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,8 +29,9 @@ public class MainView extends VBox {
         solveButton.setOnAction(this::handleSolve);
 
         this.canvas = new Canvas(400d, 400d);
-        this.canvas.setOnMouseMoved(this::handleHover);
-        this.canvas.setOnMouseClicked(this::handleSelect);
+        this.canvas.setOnMouseMoved(this::handleMarkBox);
+        this.canvas.setOnMouseClicked(this::handleSelectBox);
+        this.setOnKeyTyped(this::handleChangeGrid);
 
         this.getChildren().addAll(solveButton, this.canvas);
 
@@ -51,7 +53,19 @@ public class MainView extends VBox {
         };
     }
 
-    private void handleSelect(MouseEvent mouseEvent) {
+    private void handleChangeGrid(KeyEvent event) {
+        if (selectedBox != null) {
+            int x = (int) this.selectedBox.getX();
+            int y = (int) this.selectedBox.getY();
+            String input = event.getCharacter();
+            if (Character.isDigit(input.charAt(0)) && input.charAt(0) != '0') {
+                this.solver.grid[y][x] = Integer.parseInt(input);
+                draw();
+            }
+        }
+    }
+
+    private void handleSelectBox(MouseEvent event) {
         if (this.markedBox != null) {
             this.selectedBox = this.markedBox;
         } else {
@@ -60,7 +74,7 @@ public class MainView extends VBox {
         draw();
     }
 
-    private void handleHover(MouseEvent event) {
+    private void handleMarkBox(MouseEvent event) {
         try {
             double mouseX = event.getX();
             double mouseY = event.getY();
@@ -119,4 +133,5 @@ public class MainView extends VBox {
             }
         }
     }
+
 }
