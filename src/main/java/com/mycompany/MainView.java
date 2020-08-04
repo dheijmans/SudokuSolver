@@ -21,6 +21,7 @@ public class MainView extends VBox {
     private final Solver solver;
 
     private Point2D markedBox;
+    private Point2D selectedBox;
 
     public MainView() {
         Button solveButton = new Button("Solve");
@@ -28,6 +29,7 @@ public class MainView extends VBox {
 
         this.canvas = new Canvas(400d, 400d);
         this.canvas.setOnMouseMoved(this::handleHover);
+        this.canvas.setOnMouseClicked(this::handleSelect);
 
         this.getChildren().addAll(solveButton, this.canvas);
 
@@ -47,6 +49,13 @@ public class MainView extends VBox {
             {0, 9, 0, 4, 0, 0, 0, 7, 0},
             {0, 0, 6, 0, 0, 0, 0, 0, 0}
         };
+    }
+
+    private void handleSelect(MouseEvent mouseEvent) {
+        if (this.markedBox != null) {
+            this.selectedBox = this.markedBox;
+            draw();
+        }
     }
 
     private void handleHover(MouseEvent event) {
@@ -76,8 +85,13 @@ public class MainView extends VBox {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         if (markedBox != null) {
-            gc.setFill(Color.LIGHTGREY);
+            gc.setFill(Color.LIGHTGRAY);
             gc.fillRect(this.markedBox.getX(), this.markedBox.getY(), 1, 1);
+        }
+
+        if (selectedBox != null) {
+            gc.setFill(Color.GRAY);
+            gc.fillRect(this.selectedBox.getX(), this.selectedBox.getY(), 1, 1);
         }
 
         gc.setStroke(Color.BLACK);
