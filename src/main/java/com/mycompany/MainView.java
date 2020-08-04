@@ -54,8 +54,10 @@ public class MainView extends VBox {
     private void handleSelect(MouseEvent mouseEvent) {
         if (this.markedBox != null) {
             this.selectedBox = this.markedBox;
-            draw();
+        } else {
+            this.selectedBox = null;
         }
+        draw();
     }
 
     private void handleHover(MouseEvent event) {
