@@ -1,15 +1,18 @@
 package com.mycompany;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
 
 public class MainView extends VBox {
 
@@ -17,10 +20,15 @@ public class MainView extends VBox {
     private final Affine affine;
     private final Solver solver;
 
+    private Point2D markedBox;
+
     public MainView() {
         Button solveButton = new Button("Solve");
         solveButton.setOnAction(this::handleSolve);
+
         this.canvas = new Canvas(400d, 400d);
+        this.canvas.setOnMouseMoved(this::handleHover);
+
         this.getChildren().addAll(solveButton, this.canvas);
 
         this.affine = new Affine();
@@ -41,6 +49,22 @@ public class MainView extends VBox {
         };
     }
 
+    private void handleHover(MouseEvent event) {
+        try {
+            double mouseX = event.getX();
+            double mouseY = event.getY();
+            Point2D box = this.affine.inverseTransform(mouseX, mouseY);
+            if (box.getX() >= 0 && box.getX() < 9 && box.getY() >= 0 && box.getY() < 9) {
+                this.markedBox = new Point2D((int) box.getX(), (int) box.getY());
+            } else {
+                this.markedBox = null;
+            }
+            draw();
+        } catch (NonInvertibleTransformException e) {
+            System.out.println("Could not invert transform");
+        }
+    }
+
     private void handleSolve(ActionEvent actionEvent) {
         this.solver.solve();
         draw();
@@ -49,6 +73,12 @@ public class MainView extends VBox {
     public void draw() {
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
         gc.setTransform(this.affine);
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        if (markedBox != null) {
+            gc.setFill(Color.LIGHTGREY);
+            gc.fillRect(this.markedBox.getX(), this.markedBox.getY(), 1, 1);
+        }
 
         gc.setStroke(Color.BLACK);
         for (int i = 0; i < 10; i++) {
@@ -61,6 +91,7 @@ public class MainView extends VBox {
             gc.strokeLine(0d, i, 9d, i);
         }
 
+        gc.setFill(Color.BLACK);
         gc.setFont(Font.font(0.75d));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
