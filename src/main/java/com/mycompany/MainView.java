@@ -29,27 +29,17 @@ public class MainView extends VBox {
         this.canvas = new Canvas(400d, 400d);
         this.canvas.setOnMouseMoved(this::handleMarkBox);
         this.canvas.setOnMouseClicked(this::handleSelectBox);
-        this.setOnKeyTyped(this::handleChangeBox);
-        this.setOnKeyReleased(this::handleClearBox);
 
         this.getChildren().addAll(toolbar, this.canvas);
+
+        this.setOnKeyTyped(this::handleChangeBox);
+        this.setOnKeyReleased(this::handleClearBox);
 
         this.affine = new Affine();
         this.affine.appendScale(this.canvas.getWidth() / 10d, this.canvas.getHeight() / 10d);
         this.affine.appendTranslation(0.5d, 0.5d);
 
         this.solver = new Solver();
-        this.solver.grid = new int[][] {
-            {0, 0, 0, 0, 0, 0, 2, 0, 0},
-            {0, 8, 0, 0, 0, 7, 0, 9, 0},
-            {6, 0, 2, 0, 0, 0, 5, 0, 0},
-            {0, 7, 0, 0, 6, 0, 0, 0, 0},
-            {0, 0, 0, 9, 0, 1, 0, 0, 0},
-            {0, 0, 0, 0, 2, 0, 0, 4, 0},
-            {0, 0, 5, 0, 0, 0, 6, 0, 3},
-            {0, 9, 0, 4, 0, 0, 0, 7, 0},
-            {0, 0, 6, 0, 0, 0, 0, 0, 0}
-        };
     }
 
     private void handleClearBox(KeyEvent event) {
