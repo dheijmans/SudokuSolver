@@ -6,6 +6,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -31,7 +32,8 @@ public class MainView extends VBox {
         this.canvas = new Canvas(400d, 400d);
         this.canvas.setOnMouseMoved(this::handleMarkBox);
         this.canvas.setOnMouseClicked(this::handleSelectBox);
-        this.setOnKeyTyped(this::handleChangeGrid);
+        this.setOnKeyTyped(this::handleChangeBox);
+        this.setOnKeyReleased(this::handleClearBox);
 
         this.getChildren().addAll(solveButton, this.canvas);
 
@@ -53,12 +55,24 @@ public class MainView extends VBox {
         };
     }
 
-    private void handleChangeGrid(KeyEvent event) {
-        if (selectedBox != null) {
-            int x = (int) this.selectedBox.getX();
-            int y = (int) this.selectedBox.getY();
+    private void handleClearBox(KeyEvent event) {
+        if (this.selectedBox != null) {
+            KeyCode input = event.getCode();
+            if (input.equals(KeyCode.BACK_SPACE) || input.equals(KeyCode.DELETE)) {
+                int x = (int) this.selectedBox.getX();
+                int y = (int) this.selectedBox.getY();
+                this.solver.grid[y][x] = 0;
+                draw();
+            }
+        }
+    }
+
+    private void handleChangeBox(KeyEvent event) {
+        if (this.selectedBox != null) {
             String input = event.getCharacter();
             if (Character.isDigit(input.charAt(0)) && input.charAt(0) != '0') {
+                int x = (int) this.selectedBox.getX();
+                int y = (int) this.selectedBox.getY();
                 this.solver.grid[y][x] = Integer.parseInt(input);
                 draw();
             }
