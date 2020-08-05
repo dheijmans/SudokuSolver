@@ -30,6 +30,17 @@ public class Solver {
         return true;
     }
 
+    public boolean isGridValid() {
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                if (!isValid(x, y, this.grid[y][x]) && this.grid[y][x] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private boolean isValid(int x, int y, int n) {
         for (int i = 0; i < 9; i++) {
             if (n == grid[y][i] && i != x) {

@@ -26,7 +26,14 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleSolve(ActionEvent event) {
-        this.mainView.getSolver().solve();
+        this.mainView.setSelectedBox(null);
+        if (this.mainView.getSolver().isGridValid()) {
+            if (!this.mainView.getSolver().solve()) {
+                System.out.println("Grid has no solution");
+            }
+        } else {
+            System.out.println("Grid is invalid");
+        }
         this.mainView.draw();
     }
 
