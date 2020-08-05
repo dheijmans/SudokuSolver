@@ -21,6 +21,7 @@ public class Toolbar extends ToolBar {
 
     private void handleClear(ActionEvent event) {
         this.mainView.getSolver().grid = new int[9][9];
+        this.mainView.setSelectedBox(null);
         this.mainView.draw();
     }
 

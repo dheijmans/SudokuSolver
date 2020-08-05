@@ -134,4 +134,8 @@ public class MainView extends VBox {
         return this.solver;
     }
 
+    public void setSelectedBox(Point2D selectedBox) {
+        this.selectedBox = selectedBox;
+    }
+
 }
