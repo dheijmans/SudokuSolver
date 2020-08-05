@@ -1,11 +1,9 @@
 package com.mycompany;
 
-import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -26,8 +24,7 @@ public class MainView extends VBox {
     private Point2D selectedBox;
 
     public MainView() {
-        Button solveButton = new Button("Solve");
-        solveButton.setOnAction(this::handleSolve);
+        Toolbar toolbar = new Toolbar(this);
 
         this.canvas = new Canvas(400d, 400d);
         this.canvas.setOnMouseMoved(this::handleMarkBox);
@@ -35,7 +32,7 @@ public class MainView extends VBox {
         this.setOnKeyTyped(this::handleChangeBox);
         this.setOnKeyReleased(this::handleClearBox);
 
-        this.getChildren().addAll(solveButton, this.canvas);
+        this.getChildren().addAll(toolbar, this.canvas);
 
         this.affine = new Affine();
         this.affine.appendScale(this.canvas.getWidth() / 10d, this.canvas.getHeight() / 10d);
@@ -104,11 +101,6 @@ public class MainView extends VBox {
         }
     }
 
-    private void handleSolve(ActionEvent actionEvent) {
-        this.solver.solve();
-        draw();
-    }
-
     public void draw() {
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
         gc.setTransform(this.affine);
@@ -146,6 +138,10 @@ public class MainView extends VBox {
                 }
             }
         }
+    }
+
+    public Solver getSolver() {
+        return this.solver;
     }
 
 }
