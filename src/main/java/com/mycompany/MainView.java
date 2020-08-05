@@ -97,12 +97,12 @@ public class MainView extends VBox {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         if (markedBox != null) {
-            gc.setFill(Color.LIGHTGRAY);
+            gc.setFill(Color.LIGHTGREY);
             gc.fillRect(this.markedBox.getX(), this.markedBox.getY(), 1, 1);
         }
 
         if (selectedBox != null) {
-            gc.setFill(Color.GRAY);
+            gc.setFill(Color.DARKGREY);
             gc.fillRect(this.selectedBox.getX(), this.selectedBox.getY(), 1, 1);
         }
 
