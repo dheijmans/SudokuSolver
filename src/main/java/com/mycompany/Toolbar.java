@@ -13,8 +13,15 @@ public class Toolbar extends ToolBar {
 
         Button solveButton = new Button("Solve");
         solveButton.setOnAction(this::handleSolve);
+        Button clearButton = new Button("Clear");
+        clearButton.setOnAction(this::handleClear);
 
-        this.getItems().addAll(solveButton);
+        this.getItems().addAll(solveButton, clearButton);
+    }
+
+    private void handleClear(ActionEvent event) {
+        this.mainView.getSolver().grid = new int[9][9];
+        this.mainView.draw();
     }
 
     private void handleSolve(ActionEvent event) {

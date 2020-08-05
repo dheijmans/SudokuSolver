@@ -58,7 +58,7 @@ public class MainView extends VBox {
             if (input.equals(KeyCode.BACK_SPACE) || input.equals(KeyCode.DELETE)) {
                 int x = (int) this.selectedBox.getX();
                 int y = (int) this.selectedBox.getY();
-                this.solver.grid[y][x] = 0;
+                this.solver.grid[y][x] = Solver.EMPTY;
                 draw();
             }
         }
