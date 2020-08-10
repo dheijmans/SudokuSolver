@@ -64,7 +64,7 @@ public class Solver {
         return true;
     }
 
-    public void printGrid() {
+    public static void printGrid(int[][] grid) {
         for (int y = 0; y < 9; y++) {
             if (y % 3 == 0 && y != 0) {
                 System.out.println("— — —   — — —   — — —");
@@ -73,7 +73,7 @@ public class Solver {
                 if (x % 3 == 0 && x != 0) {
                     System.out.print("| ");
                 }
-                if (this.grid[y][x] == EMPTY) {
+                if (grid[y][x] == EMPTY) {
                     if (x == 8) {
                         System.out.println(".");
                     } else {
@@ -81,9 +81,9 @@ public class Solver {
                     }
                 } else {
                     if (x == 8) {
-                        System.out.println(this.grid[y][x]);
+                        System.out.println(grid[y][x]);
                     } else {
-                        System.out.print(this.grid[y][x] + " ");
+                        System.out.print(grid[y][x] + " ");
                     }
                 }
             }

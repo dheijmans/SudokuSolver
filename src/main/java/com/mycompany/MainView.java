@@ -23,6 +23,10 @@ public class MainView extends VBox {
     private Point2D markedBox;
     private Point2D selectedBox;
 
+    private boolean[][] unsolvedGrid;
+    public static final boolean UNSOLVED = true;
+    public static final boolean SOLVED = false;
+
     public MainView() {
         Toolbar toolbar = new Toolbar(this);
 
@@ -124,6 +128,13 @@ public class MainView extends VBox {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 if (this.solver.grid[y][x] != Solver.EMPTY) {
+                    if (this.unsolvedGrid != null) {
+                        if (this.unsolvedGrid[y][x] == UNSOLVED) {
+                            gc.setFill(Color.ROYALBLUE);
+                        } else {
+                            gc.setFill(Color.BLACK);
+                        }
+                    }
                     gc.fillText(String.valueOf(this.solver.grid[y][x]), x + 0.5d, y + 0.5d);
                 }
             }
@@ -136,6 +147,23 @@ public class MainView extends VBox {
 
     public void setSelectedBox(Point2D selectedBox) {
         this.selectedBox = selectedBox;
+    }
+
+    public void setUnsolvedGrid() {
+        this.unsolvedGrid = new boolean[9][9];
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                if (this.solver.grid[y][x] == Solver.EMPTY) {
+                    this.unsolvedGrid[y][x] = UNSOLVED;
+                } else {
+                    this.unsolvedGrid[y][x] = SOLVED;
+                }
+            }
+        }
+    }
+
+    public void resetUnsolvedGrid() {
+        this.unsolvedGrid = null;
     }
 
 }

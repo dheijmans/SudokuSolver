@@ -22,12 +22,14 @@ public class Toolbar extends ToolBar {
     private void handleClear(ActionEvent event) {
         this.mainView.getSolver().grid = new int[9][9];
         this.mainView.setSelectedBox(null);
+        this.mainView.resetUnsolvedGrid();
         this.mainView.draw();
     }
 
     private void handleSolve(ActionEvent event) {
         this.mainView.setSelectedBox(null);
         if (this.mainView.getSolver().isGridValid()) {
+            this.mainView.setUnsolvedGrid();
             if (!this.mainView.getSolver().solve()) {
                 System.out.println("Grid has no solution");
             }
