@@ -23,20 +23,25 @@ public class Toolbar extends ToolBar {
         this.mainView.getSolver().grid = new int[9][9];
         this.mainView.setSelectedBox(null);
         this.mainView.resetUnsolvedGrid();
+        this.mainView.setEditing(true);
         this.mainView.draw();
     }
 
     private void handleSolve(ActionEvent event) {
-        this.mainView.setSelectedBox(null);
-        if (this.mainView.getSolver().isGridValid()) {
-            this.mainView.setUnsolvedGrid();
-            if (!this.mainView.getSolver().solve()) {
-                System.out.println("Grid has no solution");
+        if (this.mainView.isEditing()) {
+            this.mainView.setSelectedBox(null);
+            if (this.mainView.getSolver().isGridValid()) {
+                this.mainView.setUnsolvedGrid();
+                if (!this.mainView.getSolver().solve()) {
+                    System.out.println("Grid has no solution");
+                } else {
+                    this.mainView.setEditing(false);
+                }
+            } else {
+                System.out.println("Grid is invalid");
             }
-        } else {
-            System.out.println("Grid is invalid");
+            this.mainView.draw();
         }
-        this.mainView.draw();
     }
 
 }

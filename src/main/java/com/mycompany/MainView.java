@@ -22,6 +22,7 @@ public class MainView extends VBox {
 
     private Point2D markedBox;
     private Point2D selectedBox;
+    private boolean editing;
 
     private boolean[][] unsolvedGrid;
     public static final boolean UNSOLVED = true;
@@ -39,6 +40,8 @@ public class MainView extends VBox {
         this.setOnKeyTyped(this::handleChangeBox);
         this.setOnKeyReleased(this::handleClearBox);
 
+        this.editing = true;
+
         this.affine = new Affine();
         this.affine.appendScale(this.canvas.getWidth() / 10d, this.canvas.getHeight() / 10d);
         this.affine.appendTranslation(0.5d, 0.5d);
@@ -47,7 +50,7 @@ public class MainView extends VBox {
     }
 
     private void handleClearBox(KeyEvent event) {
-        if (this.selectedBox != null) {
+        if (this.selectedBox != null && this.editing) {
             KeyCode input = event.getCode();
             if (input.equals(KeyCode.BACK_SPACE) || input.equals(KeyCode.DELETE)) {
                 int x = (int) this.selectedBox.getX();
@@ -59,7 +62,7 @@ public class MainView extends VBox {
     }
 
     private void handleChangeBox(KeyEvent event) {
-        if (this.selectedBox != null) {
+        if (this.selectedBox != null && this.editing) {
             String input = event.getCharacter();
             if (Character.isDigit(input.charAt(0)) && input.charAt(0) != '0') {
                 int x = (int) this.selectedBox.getX();
@@ -164,6 +167,14 @@ public class MainView extends VBox {
 
     public void resetUnsolvedGrid() {
         this.unsolvedGrid = null;
+    }
+
+    public boolean isEditing() {
+        return editing;
+    }
+
+    public void setEditing(boolean editing) {
+        this.editing = editing;
     }
 
 }
