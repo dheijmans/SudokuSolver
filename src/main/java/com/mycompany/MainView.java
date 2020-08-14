@@ -27,11 +27,12 @@ public class MainView extends VBox {
     private boolean[][] unsolvedGrid;
     public static final boolean UNSOLVED = true;
     public static final boolean SOLVED = false;
+    private String message;
 
     public MainView() {
         Toolbar toolbar = new Toolbar(this);
 
-        this.canvas = new Canvas(400d, 400d);
+        this.canvas = new Canvas(400d, 440d);
         this.canvas.setOnMouseMoved(this::handleMarkBox);
         this.canvas.setOnMouseClicked(this::handleSelectBox);
 
@@ -43,7 +44,7 @@ public class MainView extends VBox {
         this.editing = true;
 
         this.affine = new Affine();
-        this.affine.appendScale(this.canvas.getWidth() / 10d, this.canvas.getHeight() / 10d);
+        this.affine.appendScale(this.canvas.getWidth() / 10d, this.canvas.getHeight() / 11d);
         this.affine.appendTranslation(0.5d, 0.5d);
 
         this.solver = new Solver();
@@ -142,6 +143,12 @@ public class MainView extends VBox {
                 }
             }
         }
+
+        gc.setFill(Color.CRIMSON);
+        gc.setFont(Font.font(0.45d));
+        if (this.message != null) {
+            gc.fillText(this.message, 4.5d, 9.4d);
+        }
     }
 
     public Solver getSolver() {
@@ -175,6 +182,10 @@ public class MainView extends VBox {
 
     public void setEditing(boolean editing) {
         this.editing = editing;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

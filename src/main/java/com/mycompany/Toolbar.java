@@ -24,6 +24,7 @@ public class Toolbar extends ToolBar {
         this.mainView.setSelectedBox(null);
         this.mainView.resetUnsolvedGrid();
         this.mainView.setEditing(true);
+        this.mainView.setMessage(null);
         this.mainView.draw();
     }
 
@@ -33,12 +34,12 @@ public class Toolbar extends ToolBar {
             if (this.mainView.getSolver().isGridValid()) {
                 this.mainView.setUnsolvedGrid();
                 if (!this.mainView.getSolver().solve()) {
-                    System.out.println("Grid has no solution");
+                    this.mainView.setMessage("Grid has no solution!");
                 } else {
                     this.mainView.setEditing(false);
                 }
             } else {
-                System.out.println("Grid is invalid");
+                this.mainView.setMessage("Grid is invalid!");
             }
             this.mainView.draw();
         }
